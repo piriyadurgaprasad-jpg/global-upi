@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPay Global · Premium Dashboard</title>
+
+    <!-- Google Fonts (Home page style) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ========================
+           HOME.HTML COLOR VARIABLES (Premium Navy/Gold Theme)
+        ======================== */
+        :root {
+            --cream:      #FFFBF5;
+            --ivory:      #F7F3ED;
+            --warm-white: #FEFCF9;
+            --gold:       #B8860B;
+            --gold-light: #D4A853;
+            --gold-dark:  #8B6914;
+            --navy:       #0B2338;
+            --navy-mid:   #1A3B5C;
+            --navy-soft:  #2B577C;
+            --charcoal:   #1C1C1C;
+            --charcoal-s: #3A3A3A;
+            --taupe:      #A69080;
+            --taupe-l:    #C4B5A5;
+            --green:      #1F6E4C;
+            --display: 'Cormorant Garamond', Georgia, serif;
+            --body:    'DM Sans', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body);
+            background: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.5;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar - Premium Navy / Gold */
+        .sidebar {
+            width: 280px;
+            background: var(--navy);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 8px 0 32px rgba(0, 0, 0, 0.12);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 1.6rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text {
+            font-family: var(--display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff, var(--taupe-l));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-section {
+            flex: 1;
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            margin: 0.4rem 0;
+            border-radius: 16px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--navy);
+            box-shadow: 0 6px 14px rgba(184, 134, 11, 0.3);
+        }
+
+        .nav-item.active i {
+            color: var(--navy);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin-bottom: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .user-details h4 {
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-details span {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem 1.8rem;
+            border-radius: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(11, 35, 56, 0.08);
+        }
+
+        .page-title h1 {
+            font-family: var(--display);
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title p {
+            color: var(--taupe);
+            font-size: 0.85rem;
+            margin-top: 0.2rem;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .action-icons i {
+            font-size: 1.2rem;
+            color: var(--taupe);
+            background: var(--ivory);
+            padding: 0.6rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(11, 35, 56, 0.08);
+        }
+
+        .action-icons i:hover {
+            background: var(--navy);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Action Buttons */
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: white;
+            border: 1px solid var(--taupe-l);
+            color: var(--navy);
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .action-btn:hover {
+            background: var(--ivory);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(11, 35, 56, 0.1);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+            color: white;
+            border: none;
+            box-shadow: 0 6px 14px rgba(11, 35, 56, 0.25);
+        }
+
+        .action-btn.primary:hover {
+            background: linear-gradient(135deg, var(--navy-mid), var(--navy-soft));
+            transform: translateY(-2px);
+        }
+
+        /* Card Styles */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.8rem;
+            border: 1px solid rgba(11, 35, 56, 0.06);
+            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 32px -16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--ivory);
+        }
+
+        .card-header h3 {
+            font-family: var(--display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        /* Wallet Overview Premium */
+        .wallet-overview {
+            background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+            border-radius: 32px;
+            padding: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 32px -12px rgba(11, 35, 56, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .wallet-icon-big {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .wallet-currency {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+        }
+
+        .wallet-balance {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin: 0.5rem 0;
+        }
+
+        /* Transaction List */
+        .transaction-list {
+            list-style: none;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--ivory);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .tx-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--ivory);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+
+        .tx-details {
+            flex: 1;
+        }
+
+        .tx-details h4 {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        .tx-details span {
+            font-size: 0.75rem;
+            color: var(--taupe);
+        }
+
+        .tx-amount {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .tx-amount.positive {
+            color: var(--green);
+        }
+
+        .tx-amount.negative {
+            color: #ef4444;
+        }
+
+        /* Table Styles */
+        .payment-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .payment-history-table th {
+            text-align: left;
+            padding: 0.8rem 0.5rem;
+            color: var(--taupe);
+            font-weight: 500;
+            border-bottom: 1px solid var(--ivory);
+        }
+
+        .payment-history-table td {
+            padding: 0.8rem 0.5rem;
+            border-bottom: 1px solid #f5f7fa;
+        }
+
+        .status-badge {
+            background: #e3f7ed;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: var(--green);
+            display: inline-block;
+        }
+
+        .status-badge.pending {
+            background: #fff6e5;
+            color: #f59e0b;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: white;
+            border-radius: 28px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            border: 1px solid rgba(11, 35, 56, 0.06);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .profile-avatar-large {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styles */
+        .form-row {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-row label {
+            font-weight: 600;
+            color: var(--navy);
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .form-row label i {
+            margin-right: 0.4rem;
+            color: var(--gold);
+        }
+
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            border: 1.5px solid var(--taupe-l);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(11, 35, 56, 0.3);
+        }
+
+        .save-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 35, 56, 0.6);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 480px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 32px 48px -16px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-family: var(--display);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .close-modal {
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--taupe);
+            background: none;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #ef4444;
+        }
+
+        .info-box {
+            background: var(--ivory);
+            border-radius: 16px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            border-left: 4px solid var(--gold);
+        }
+
+        .recipient-card {
+            background: var(--ivory);
+            border: 1px solid var(--taupe-l);
+            border-radius: 20px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .withdraw-fields {
+            display: none;
+        }
+
+        .section-page {
+            display: none;
+        }
+
+        .section-page.active-section {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 80px; padding: 1.5rem 0.5rem; }
+            .sidebar .logo-text, .sidebar .nav-item span, .sidebar .user-details { display: none; }
+            .main-content { padding: 1rem; }
+            .content-grid { grid-template-columns: 1fr; }
+            .top-bar { flex-direction: column; gap: 1rem; text-align: center; }
+            .profile-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar Premium Navy/Gold -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon"><i class="fas fa-globe"></i></div>
+            <span class="logo-text">UniPay</span>
+        </div>
+
+        <nav class="nav-section">
+            <div class="nav-item active" data-page="dashboard">
+                <i class="fas fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" data-page="wallet">
+                <i class="fas fa-wallet"></i>
+                <span>Wallet</span>
+            </div>
+            <div class="nav-item" data-page="history">
+                <i class="fas fa-history"></i>
+                <span>Transactions</span>
+            </div>
+            <div class="nav-item" data-page="profile">
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+            </div>
+            <div class="nav-item" data-page="support">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ name|default:request.user.username|slice:":1"|upper }}
+                </div>
+                <div class="user-details">
+                    <h4>{{ name|default:request.user.username|truncatechars:18 }}</h4>
+                    <span>{{ email|default:request.user.email|truncatechars:20 }}</span>
+                </div>
+            </div>
+            <div class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="page-title">
+                <h1 id="current-page-title">Dashboard</h1>
+                <p id="current-page-subtitle">Welcome back, {{ name|default:request.user.username }}</p>
+                <div style="margin-top: 8px; font-size: 0.85rem; color: var(--taupe);">
+                    <span id="live-date"></span> 
+                    <span id="live-time" style="margin-left: 12px; font-weight: 600;"></span>
+                </div>
+            </div>
+           
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="section-page active-section">
+            <div class="action-bar">
+                <button class="action-btn primary" onclick="setActivePage('wallet')">
+                    <i class="fas fa-wallet"></i> View Wallet
+                </button>
+                <button class="action-btn" onclick="openSendModal()">
+                    <i class="fas fa-paper-plane"></i> Send Money
+                </button>
+            </div>
+
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                        <a href="#" id="viewAllHistory" style="color:var(--gold); text-decoration:none; font-weight:500;">View all →</a>
+                    </div>
+                    <ul class="transaction-list">
+                        {% for tx in recent_tx %}
+                        <li class="transaction-item">
+                            <div class="tx-icon">
+                                {% if tx.transaction_type == 'sent' %}<i class="fas fa-arrow-up"></i>
+                                {% elif tx.transaction_type == 'received' %}<i class="fas fa-arrow-down"></i>
+                                {% elif tx.transaction_type == 'deposit' %}<i class="fas fa-plus"></i>
+                                {% else %}<i class="fas fa-exchange-alt"></i>{% endif %}
+                            </div>
+                            <div class="tx-details">
+                                <h4>{{ tx.description|default:tx.transaction_type|title }}</h4>
+                                <span>{{ tx.created_at|date:"M d, Y · H:i" }}</span>
+                            </div>
+                            <div>
+                                <span class="tx-amount {% if tx.transaction_type in 'received deposit' %}positive{% else %}negative{% endif %}">
+                                    {% if tx.transaction_type in 'received deposit' %}+{% else %}-{% endif %}
+                                    {{ tx.amount|floatformat:2 }} {{ profile.preferred_currency|default:"USD" }}
+                                </span>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="transaction-item">No recent transactions yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Pending Approvals</h3>
+                        <span style="background:#fff6e5; padding:0.2rem 0.8rem; border-radius:40px; font-size:0.8rem; color:#f59e0b;">
+                            {{ pending_count|default:"0" }}
+                        </span>
+                    </div>
+                    {% for req in pending_requests %}
+                    <div class="request-item" style="padding:0.9rem 0; border-bottom:1px solid var(--ivory); display:flex; align-items:center; gap:1rem;">
+                        <i class="fas fa-clock" style="color:#f59e0b; font-size:1.3rem;"></i>
+                        <div style="flex:1;">
+                            <p style="font-size:0.95rem; margin-bottom:4px;">
+                                Sending <strong>{{ req.amount }} {{ req.sender_wallet.currency }}</strong> 
+                                to {{ req.receiver.get_full_name|default:req.receiver.email }}
+                            </p>
+                            <small style="color:var(--taupe);">{{ req.created_at|date:"M d, Y · H:i" }}</small>
+                        </div>
+                        <div><span style="background:#fff6e5; padding:0.35rem 0.9rem; border-radius:30px; font-size:0.8rem; color:#f59e0b; font-weight:500;">Pending</span></div>
+                    </div>
+                    {% empty %}
+                    <p style="color:var(--taupe); text-align:center; padding:2rem 1rem;">No pending approval requests.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Section -->
+        <div id="wallet-section" class="section-page">
+            <div class="wallet-overview">
+                <div class="wallet-icon-big"><i class="fas fa-wallet"></i></div>
+                <div class="wallet-currency">{{ profile.preferred_currency|default:"USD" }} Wallet</div>
+                <div class="wallet-balance">
+                    {% if profile.preferred_currency == 'INR' %}₹{% elif profile.preferred_currency == 'USD' %}${% elif profile.preferred_currency == 'GBP' %}£{% elif profile.preferred_currency == 'KWD' %}د.ك{% endif %}
+                    {{ wallet.balance|default:"0.00"|floatformat:2 }}
+                </div>
+                <p style="color:rgba(255,255,255,0.7); margin-top:0.5rem;">Available Balance</p>
+                <div style="margin-top:2rem; display:flex; gap:1rem; justify-content:center;">
+                    <button class="action-btn" style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.25);" onclick="openAddMoneyModal()">
+                        <i class="fas fa-plus-circle"></i> Add Money
+                    </button>
+                    <button class="action-btn" style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.25);" onclick="openWithdrawModal()">
+                        <i class="fas fa-arrow-up-from-bracket"></i> Withdraw
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Section -->
+        <div id="history-section" class="section-page">
+            <div class="card">
+                <div class="card-header">
+                    <h3>All Transactions</h3>
+                    <span style="font-size:0.85rem; color:var(--taupe);">
+                        Page {{ all_transactions.number }} of {{ all_transactions.paginator.num_pages }}
+                        ({{ all_transactions.paginator.count }} total)
+                    </span>
+                </div>
+
+                <table class="payment-history-table">
+                    <thead>
+                        <tr><th>Date</th><th>Type</th><th>Description</th><th>Amount</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in all_transactions %}
+                        <tr>
+                            <td>{{ tx.created_at|date:"Y-m-d H:i" }}</td>
+                            <td>{{ tx.transaction_type|title }}</td>
+                            <td>{{ tx.description|default:'-' }}</td>
+                            <td class="{% if tx.transaction_type in 'received deposit' %}positive{% else %}negative{% endif %}">
+                                {% if tx.transaction_type == 'received' or tx.transaction_type == 'deposit' %}+{% else %}-{% endif %}
+                                {{ tx.amount|floatformat:2 }} {{ profile.preferred_currency|default:"USD" }}
+                            </td>
+                            <td>
+                                {% if tx.status == 'pending' %}
+                                    <span class="status-badge pending">Pending</span>
+                                {% else %}
+                                    <span class="status-badge">Completed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" style="text-align:center; padding:3rem;">No transactions found</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if all_transactions.paginator.num_pages > 1 %}
+                <div style="margin-top: 30px; text-align: center;">
+                    <div style="display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
+                        {% if all_transactions.has_previous %}
+                            <a href="?page={{ all_transactions.previous_page_number }}#history-section" class="action-btn" style="padding: 10px 20px;">← Previous</a>
+                        {% else %}
+                            <span class="action-btn" style="padding: 10px 20px; opacity: 0.5; cursor: not-allowed;">← Previous</span>
+                        {% endif %}
+
+                        {% for num in all_transactions.paginator.page_range %}
+                            {% if num > all_transactions.number|add:"-2" and num < all_transactions.number|add:"3" %}
+                                <a href="?page={{ num }}#history-section" class="action-btn {% if num == all_transactions.number %}primary{% endif %}" style="padding: 10px 16px; min-width: 42px; text-align: center;">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if all_transactions.has_next %}
+                            <a href="?page={{ all_transactions.next_page_number }}#history-section" class="action-btn" style="padding: 10px 20px;">Next →</a>
+                        {% else %}
+                            <span class="action-btn" style="padding: 10px 20px; opacity: 0.5; cursor: not-allowed;">Next →</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="section-page">
+            <div class="profile-header">
+                <div class="profile-avatar-large">
+                    {{ name|default:request.user.email|slice:":1"|upper }}
+                </div>
+                <div>
+                    <h2 style="font-family:var(--display);">{{ name }}</h2>
+                    <p><i class="fas fa-envelope"></i> {{ email }}</p>
+                    <p><i class="fas fa-phone"></i> {{ profile.mobile|default:"Not set" }}</p>
+                    <div style="background:#e3f7ed; padding:0.2rem 1rem; border-radius:30px; font-size:0.75rem; color:var(--green); display:inline-flex;">
+                        <i class="fas fa-check-circle"></i> Verified
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-key"></i> Change Password</h3>
+                    <span style="font-size:0.75rem; color:var(--taupe);">Secure your account</span>
+                </div>
+
+                {% if messages %}
+                <div style="margin-bottom: 1.5rem;">
+                    {% for message in messages %}
+                    <div style="padding: 12px 16px; border-radius: 12px; margin-bottom: 10px; background: {% if message.tags == 'success' %}#e3f7ed{% else %}#fee2e2{% endif %}; color: {% if message.tags == 'success' %}#10b981{% else %}#ef4444{% endif %};">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'change_password' %}">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <label><i class="fas fa-lock"></i> Current Password</label>
+                        <input type="password" name="old_password" placeholder="Enter your current password" required>
+                    </div>
+                    <div class="form-row">
+                        <label><i class="fas fa-key"></i> New Password</label>
+                        <input type="password" name="new_password1" placeholder="Minimum 8 characters" required>
+                        <small style="color:var(--taupe); font-size:0.75rem;">Password must be at least 8 characters long</small>
+                    </div>
+                    <div class="form-row">
+                        <label><i class="fas fa-check-circle"></i> Confirm New Password</label>
+                        <input type="password" name="new_password2" placeholder="Re-enter new password" required>
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-sync-alt"></i> Change Password</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Support Section -->
+        <div id="support-section" class="section-page">
+            <div class="card">
+                <h3 style="margin-bottom:1.5rem;">Help & Support</h3>
+                <p style="color:var(--taupe); margin-bottom:1.5rem;">Our team typically responds within 2 hours during business hours.</p>
+
+                {% if messages %}
+                <div style="margin-bottom: 1.5rem;">
+                    {% for message in messages %}
+                    <div style="padding: 12px 16px; border-radius: 12px; margin-bottom: 10px; background: {% if message.tags == 'success' %}#e3f7ed{% else %}#fee2e2{% endif %}; color: {% if message.tags == 'success' %}#10b981{% else %}#ef4444{% endif %};">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'support' %}">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <label>Subject</label>
+                        <input type="text" name="subject" placeholder="e.g. Payment not credited, Wallet issue, etc." required>
+                    </div>
+                    <div class="form-row">
+                        <label>Your Message</label>
+                        <textarea name="message" rows="6" placeholder="Please describe your issue in detail..." required></textarea>
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modals -->
+<div id="addMoneyModal" class="modal"><div class="modal-content"><div class="modal-header"><h2>Add Money</h2><button class="close-modal" onclick="closeModal('addMoneyModal')">×</button></div><form method="POST" action="{% url 'add_balance' %}">{% csrf_token %}<div class="form-row"><label>Amount ({{ profile.preferred_currency|default:"USD" }})</label><input type="number" name="amount" step="0.01" min="1" required></div><div class="form-row"><label>Currency</label><input type="text" value="{{ profile.preferred_currency|default:'USD' }}" readonly style="background:#f1f5f9;"></div><button type="submit" class="save-btn">Proceed</button></form></div></div>
+
+<div id="withdrawModal" class="modal"><div class="modal-content"><div class="modal-header"><h2>Withdraw Money</h2><button class="close-modal" onclick="closeModal('withdrawModal')">×</button></div><form method="post" action="{% url 'withdraw_balance' %}">{% csrf_token %}<div class="form-row"><label>Amount</label><input type="number" name="amount" step="0.01" min="1" required></div><div class="form-row"><label>Method</label><select name="method" id="withdrawMethod" onchange="toggleWithdrawFields()" required><option value="">-- Select --</option><option value="upi">UPI</option><option value="bank">Bank Transfer</option></select></div><div id="upiFields" class="withdraw-fields"><div class="form-row"><label>UPI ID</label><input type="text" name="upi_id" placeholder="example@upi"></div></div><div id="bankFields" class="withdraw-fields"><div class="form-row"><label>Account Holder</label><input type="text" name="account_name"></div><div class="form-row"><label>Account Number</label><input type="text" name="account_number"></div><div class="form-row"><label>IFSC</label><input type="text" name="ifsc"></div><div class="form-row"><label>Bank Name</label><input type="text" name="bank_name"></div></div><button type="submit" class="save-btn">Withdraw</button></form></div></div>
+
+<div id="sendModal" class="modal"><div class="modal-content"><div class="modal-header"><h2>Send Money</h2><button class="close-modal" onclick="closeModal('sendModal')">×</button></div><form method="POST" action="{% url 'send_money' %}">{% csrf_token %}<div class="form-row"><label>Recipient</label><input type="text" id="recipient-input" placeholder="UPI ID / Mobile / Email" required><button type="button" onclick="lookupRecipient()" style="margin-top:0.5rem; width:100%; background:var(--navy); color:white; border:none; padding:0.7rem; border-radius:12px;">Verify Recipient</button></div><input type="hidden" name="upi_id" id="hiddenUpi"><div id="recipient-details" class="recipient-card"><div style="display:flex; gap:1rem;"><div id="receiver-avatar" style="width:45px;height:45px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;"></div><div><strong id="receiver-name"></strong><br><span id="receiver-currency"></span></div></div></div><div class="form-row"><label>Amount</label><input type="number" id="amount-input" step="0.01" min="1" required></div><button type="button" onclick="previewTransfer()" class="save-btn" style="margin-top:10px;">Preview Transfer</button><div id="transfer-preview" style="display:none;margin-top:15px;background:var(--ivory);padding:15px;border-radius:16px;"></div><input type="hidden" name="amount" id="hiddenAmount"><div class="info-box"><i class="fas fa-info-circle"></i> Admin verification required</div><button type="submit" class="save-btn">Confirm & Send</button></form></div></div>
+
+<script>
+    // Live Date & Time
+    function updateLiveTime() {
+        const currency = "{{ profile.preferred_currency|default:'INR' }}";
+        let timeZone = 'Asia/Kolkata';
+        if (currency === 'USD') timeZone = 'America/New_York';
+        else if (currency === 'GBP') timeZone = 'Europe/London';
+        else if (currency === 'KWD') timeZone = 'Asia/Kuwait';
+        const now = new Date();
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: '2-digit' };
+        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        document.getElementById('live-date').textContent = now.toLocaleDateString('en-US', dateOptions);
+        document.getElementById('live-time').textContent = now.toLocaleTimeString('en-US', { ...timeOptions, timeZone });
+    }
+    setInterval(updateLiveTime, 1000);
+    updateLiveTime();
+
+    // Navigation
+    function setActivePage(pageId, updateStorage = true) {
+        if (updateStorage) localStorage.setItem('unipay_current_page', pageId);
+        document.querySelectorAll('.nav-item[data-page]').forEach(el => el.classList.remove('active'));
+        document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+        document.querySelectorAll('.section-page').forEach(el => el.classList.remove('active-section'));
+        document.getElementById(pageId + '-section').classList.add('active-section');
+        const titles = { dashboard: 'Dashboard', wallet: 'Wallet', history: 'Transactions', profile: 'Profile', support: 'Support' };
+        document.getElementById('current-page-title').textContent = titles[pageId] || 'Dashboard';
+    }
+
+    document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+        item.addEventListener('click', function() { setActivePage(this.getAttribute('data-page')); });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.location.hash === '#history-section') setActivePage('history', false);
+        else {
+            const saved = localStorage.getItem('unipay_current_page');
+            if (saved && ['dashboard','wallet','history','profile','support'].includes(saved)) setActivePage(saved, false);
+            else setActivePage('dashboard', false);
+        }
+        document.getElementById('viewAllHistory')?.addEventListener('click', (e) => { e.preventDefault(); setActivePage('history', true); });
+    });
+
+    // Modal Functions
+    function openAddMoneyModal() { document.getElementById('addMoneyModal').classList.add('active'); }
+    function openWithdrawModal() { document.getElementById('withdrawModal').classList.add('active'); }
+    function openSendModal() { document.getElementById('sendModal').classList.add('active'); document.getElementById('recipient-details').style.display = 'none'; }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    window.onclick = (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); };
+
+    function toggleWithdrawFields() {
+        let m = document.getElementById('withdrawMethod').value;
+        document.getElementById('upiFields').style.display = m === 'upi' ? 'block' : 'none';
+        document.getElementById('bankFields').style.display = m === 'bank' ? 'block' : 'none';
+    }
+
+    function lookupRecipient() {
+        let id = document.getElementById('recipient-input').value.trim();
+        if (!id) { alert('Enter recipient'); return; }
+        fetch(`/find-receiver/?identifier=${encodeURIComponent(id)}`)
+            .then(r => r.json())
+            .then(d => {
+                if (d.success) {
+                    let details = document.getElementById('recipient-details');
+                    details.style.display = 'block';
+                    document.getElementById('receiver-name').textContent = d.receiver.name || 'Unknown';
+                    document.getElementById('receiver-avatar').textContent = (d.receiver.name || '?').charAt(0).toUpperCase();
+                    document.getElementById('receiver-currency').innerHTML = `Currency: ${d.receiver.currency || 'N/A'}`;
+                    document.getElementById('hiddenUpi').value = d.receiver.upi_id || '';
+                } else alert('Receiver not found');
+            }).catch(() => alert('Error'));
+    }
+
+    function previewTransfer() {
+        let upi = document.getElementById('hiddenUpi').value;
+        let amt = document.getElementById('amount-input').value;
+        if (!upi) { alert('Verify recipient first'); return; }
+        if (!amt) { alert('Enter amount'); return; }
+        fetch(`/preview-transfer/?upi_id=${upi}&amount=${amt}`)
+            .then(r => r.json())
+            .then(d => {
+                if (d.success) {
+                    let preview = document.getElementById('transfer-preview');
+                    preview.style.display = 'block';
+                    preview.innerHTML = `<p>Amount: ${d.amount} ${d.sender_currency}</p><p>Converted: ${d.converted_amount} ${d.receiver_currency}</p><p>Charge: ${d.charge} ${d.sender_currency}</p><p>Total: ${d.total} ${d.sender_currency}</p>`;
+                    document.getElementById('hiddenAmount').value = amt;
+                } else alert('Preview failed');
+            }).catch(() => alert('Server error'));
+    }
+
+    // Logout
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        let f = document.createElement('form'); f.method = 'POST'; f.action = "{% url 'logout' %}";
+        let csrf = document.createElement('input'); csrf.type = 'hidden'; csrf.name = 'csrfmiddlewaretoken'; csrf.value = '{{ csrf_token }}';
+        f.appendChild(csrf); document.body.appendChild(f); f.submit();
+    });
+</script>
+</body>
+</html>

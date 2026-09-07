@@ -1,0 +1,1406 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPay Admin · Dashboard</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&family=Outfit:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8eef5 100%);
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+        /* Premium Admin Layout */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar Premium */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(145deg, #0a2c44, #0f3b5e);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-shadow: 8px 0 32px rgba(0, 0, 0, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            padding: 0 0.5rem;
+        }
+        .logo-icon {
+            background: linear-gradient(135deg, #ffd166, #ffb347);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f3b5e;
+            font-size: 1.6rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        .nav-section {
+            flex: 1;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1rem;
+            margin: 0.4rem 0;
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .nav-item i {
+            width: 24px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            transform: translateX(4px);
+        }
+        .nav-item.active {
+            background: linear-gradient(135deg, #ffd166, #ffb347);
+            color: #0f3b5e;
+            box-shadow: 0 6px 14px rgba(255, 179, 71, 0.3);
+        }
+        .nav-item.active i {
+            color: #0f3b5e;
+        }
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+        }
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            margin-bottom: 0.8rem;
+        }
+        .admin-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #ffd166, #ffb347);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #0f3b5e;
+            font-weight: 700;
+        }
+        .admin-details h4 {
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
+        }
+        .admin-details span {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .logout-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.7rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: 0.2s;
+        }
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(15, 59, 94, 0.08);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0f3b5e, #1e5a7a);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd166;
+            font-size: 1.8rem;
+        }
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a2c3e;
+        }
+        .stat-info p {
+            color: #6b7f92;
+            font-size: 0.85rem;
+            margin-top: 0.2rem;
+        }
+        /* Filter Bar */
+        .filter-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(15, 59, 94, 0.08);
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8fafd;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+        }
+        .search-box i {
+            color: #8b9bb0;
+        }
+        .search-box input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 0.9rem;
+            width: 250px;
+            font-family: inherit;
+        }
+        .filter-group {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafd;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+        }
+        .refresh-btn {
+            background: #0f3b5e;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .refresh-btn:hover {
+            background: #1e5a7a;
+            transform: translateY(-2px);
+        }
+        /* Table Card */
+        .table-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(15, 59, 94, 0.08);
+        }
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .table-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a2c3e;
+        }
+        .table-count {
+            background: #f0f4fa;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #0f3b5e;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .data-table th,
+        .data-table td {
+            padding: 1rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #f0f2f5;
+            font-size: 0.9rem;
+        }
+        .data-table th {
+            background: #f8fafd;
+            color: #6b7f92;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .data-table tr:hover {
+            background: #fafcff;
+        }
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fff6e5;
+            color: #d97706;
+        }
+        .status-approved {
+            background: #e3f7ed;
+            color: #10b981;
+        }
+        .status-rejected {
+            background: #fde8e8;
+            color: #ef4444;
+        }
+        /* Action Buttons */
+        .action-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .btn-sm {
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .btn-approve {
+            background: #10b981;
+            color: white;
+        }
+        .btn-approve:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-reject:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+        .btn-view {
+            background: #f0f4fa;
+            color: #0f3b5e;
+            border: 1px solid #e2e8f0;
+        }
+        .btn-view:hover {
+            background: #e2e8f0;
+        }
+        .no-action {
+            color: #8b9bb0;
+            font-size: 0.8rem;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 28px;
+            padding: 2rem;
+            position: relative;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a2c3e;
+        }
+        .modal-close {
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #8b9bb0;
+        }
+        .modal-close:hover {
+            color: #ef4444;
+        }
+        .detail-row {
+            display: flex;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .detail-label {
+            width: 120px;
+            font-weight: 600;
+            color: #6b7f92;
+        }
+        .detail-value {
+            flex: 1;
+            color: #1a2c3e;
+        }
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .page-btn {
+            padding: 8px 14px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .page-btn:hover {
+            background: #f0f4fa;
+        }
+        .page-btn.active {
+            background: #0f3b5e;
+            color: white;
+            border-color: #0f3b5e;
+        }
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                padding: 1.5rem 0.5rem;
+            }
+            .sidebar .logo-text,
+            .sidebar .nav-item span,
+            .sidebar .admin-details {
+                display: none;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box input {
+                width: 100%;
+            }
+        }
+
+        /* ==================== PREMIUM TICKET MODAL ==================== */
+
+.ticket-modal-content {
+    width: 95%;
+    max-width: 520px;
+    border-radius: 24px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    overflow: hidden;
+    animation: modalFade 0.3s ease;
+}
+
+/* Header */
+.ticket-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    background: linear-gradient(135deg, #0f3b5e, #1e5a7a);
+    color: white;
+}
+
+.ticket-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.ticket-title i {
+    color: #ffd166;
+}
+
+.ticket-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.ticket-close:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Body */
+.ticket-body {
+    padding: 1.5rem;
+}
+
+.ticket-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #eef2f7;
+    font-size: 0.9rem;
+}
+
+.ticket-row span {
+    color: #6b7f92;
+}
+
+.ticket-row strong {
+    color: #1a2c3e;
+}
+
+/* Message Box */
+.ticket-message-box {
+    margin-top: 1.2rem;
+    background: #f8fafd;
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.msg-label {
+    font-size: 0.8rem;
+    color: #8b9bb0;
+    margin-bottom: 0.5rem;
+}
+
+.msg-content {
+    font-size: 0.9rem;
+    color: #1a2c3e;
+    line-height: 1.4;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+/* Footer */
+.ticket-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #eef2f7;
+}
+
+/* Buttons */
+.ticket-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.ticket-btn.primary {
+    background: #10b981;
+    color: white;
+}
+
+.ticket-btn.primary:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.ticket-btn.secondary {
+    background: #f0f4fa;
+    color: #0f3b5e;
+}
+
+.ticket-btn.secondary:hover {
+    background: #e2e8f0;
+}
+
+/* Animation */
+@keyframes modalFade {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #8b9bb0;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon"><i class="fas fa-globe"></i></div>
+            <span class="logo-text">UniPay Admin</span>
+        </div>
+        <nav class="nav-section">
+            <div class="nav-item" data-section="request-history">
+                <i class="fas fa-history"></i>
+                <span>Request History</span>
+            </div>
+            <div class="nav-item" data-section="users">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </div>
+            <div class="nav-item" data-section="support">
+                <i class="fas fa-headset"></i>
+                <span>Support</span>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="admin-info">
+                <div class="admin-avatar"><i class="fas fa-shield-halved"></i></div>
+                <div class="admin-details">
+                    <h4>Admin Portal</h4>
+                    <span>Super Administrator</span>
+                </div>
+            </div>
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- ==================== 1. REQUEST HISTORY SECTION ==================== -->
+        <div id="request-history" class="section">
+            <!-- Stats Cards -->
+            <div class="stats-grid" id="statsContainer">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalRequests">0</h3>
+                        <p>Total Requests</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3 id="pendingRequests">0</h3>
+                        <p>Pending Approval</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="approvedRequests">0</h3>
+                        <p>Approved</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="rejectedRequests">0</h3>
+                        <p>Rejected</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by sender, receiver, email...">
+                </div>
+                <div class="filter-group">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                    <select id="sortFilter" class="filter-select">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                    <button class="refresh-btn" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-list-ul"></i> Payment Requests</h3>
+                    <span class="table-count" id="filteredCount">0 requests</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="requestsTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Sender</th>
+                                <th><i class="fas fa-user-check"></i> Receiver</th>
+                                <th><i class="fas fa-dollar-sign"></i> Amount</th>
+                                <th><i class="fas fa-calendar"></i> Time</th>
+                                <th><i class="fas fa-tag"></i> Status</th>
+                                <th><i class="fas fa-cog"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            {% for req in requests %}
+                            <tr data-id="{{ req.id }}" data-status="{{ req.status }}"
+                                data-sender="{{ req.sender.email|lower }}"
+                                data-receiver="{{ req.receiver.email|lower }}"
+                                data-sender-name="{{ req.sender.first_name|lower }} {{ req.sender.last_name|lower }}"
+                                data-receiver-name="{{ req.receiver.first_name|lower }} {{ req.receiver.last_name|lower }}"
+                                data-time="{{ req.created_at|date:'Y-m-d H:i:s' }}">
+                                <td>
+                                    <strong>{{ req.sender.first_name }} {{ req.sender.last_name }}</strong><br>
+                                    <small style="color:#8b9bb0;">{{ req.sender.email }}</small>
+                                </td>
+                                <td>
+                                    <strong>{{ req.receiver.first_name }} {{ req.receiver.last_name }}</strong><br>
+                                    <small style="color:#8b9bb0;">{{ req.receiver.email }}</small>
+                                </td>
+                                <td style="font-weight:600;">{{ req.amount }} {{ req.sender_wallet.currency }}</td>
+                                <td><i class="far fa-clock"></i> {{ req.created_at|date:"Y-m-d H:i" }}</td>
+                                <td>
+                                    {% if req.status == "Pending" %}
+                                        <span class="status-badge status-pending"><i class="fas fa-hourglass-half"></i> Pending</span>
+                                    {% elif req.status == "Approved" %}
+                                        <span class="status-badge status-approved"><i class="fas fa-check-circle"></i> Approved</span>
+                                    {% else %}
+                                        <span class="status-badge status-rejected"><i class="fas fa-times-circle"></i> Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td class="action-group">
+                                    {% if req.status == "Pending" %}
+                                        <a href="{% url 'approve_payment' req.id %}" class="btn-sm btn-approve" onclick="return confirmAction('approve')">
+                                            <i class="fas fa-check"></i> Approve
+                                        </a>
+                                        <a href="{% url 'reject_payment' req.id %}" class="btn-sm btn-reject" onclick="return confirmAction('reject')">
+                                            <i class="fas fa-times"></i> Reject
+                                        </a>
+                                        <button class="btn-sm btn-view" onclick="viewDetails({{ req.id }}, '{{ req.sender.first_name }} {{ req.sender.last_name }}', '{{ req.receiver.first_name }} {{ req.receiver.last_name }}', '{{ req.amount }}', '{{ req.sender_wallet.currency }}', '{{ req.created_at|date:"Y-m-d H:i:s" }}', '{{ req.status }}')">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>
+                                    {% else %}
+                                        <button class="btn-sm btn-view" onclick="viewDetails({{ req.id }}, '{{ req.sender.first_name }} {{ req.sender.last_name }}', '{{ req.receiver.first_name }} {{ req.receiver.last_name }}', '{{ req.amount }}', '{{ req.sender_wallet.currency }}', '{{ req.created_at|date:"Y-m-d H:i:s" }}', '{{ req.status }}')">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </button>
+                                        <span class="no-action"><i class="fas fa-lock"></i> Processed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fas fa-inbox"></i>
+                                        <p>No payment requests found</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="pagination" id="paginationControls">
+                    <!-- Generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 3. USERS SECTION ==================== -->
+        <div id="users" class="section">
+            <!-- Stats for Users -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">{{ total_users }}</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+                    <div class="stat-info">
+                        <h3 id="activeUsers">{{ active_users|default:0 }}</h3>
+                        <p>Active Users</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="stat-info">
+                        <h3 id="newUsers">{{ new_users_this_month|default:0 }}</h3>
+                        <p>New This Month</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-ban"></i></div>
+                    <div class="stat-info">
+                        <h3 id="blockedUsers">{{ blocked_users|default:0 }}</h3>
+                        <p>Blocked Users</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Bar for Users -->
+            <div class="filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="userSearchInput" placeholder="Search by name, email, phone...">
+                </div>
+                <div class="filter-group">
+                    <select id="userStatusFilter" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <button class="refresh-btn" onclick="refreshUsers()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-users-cog"></i> All Users</h3>
+                    <span class="table-count" id="userCount">{{ total_users }} users</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> User</th>
+                                <th><i class="fas fa-envelope"></i> Email</th>
+                                <th><i class="fas fa-calendar"></i> Joined</th>
+                                <th><i class="fas fa-chart-line"></i> Transactions</th>
+                                <th><i class="fas fa-tag"></i> Status</th>
+                                <th><i class="fas fa-cog"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            {% for user in all_users %}
+                            <tr data-id="{{ user.id }}"
+                                data-name="{{ user.first_name|lower }} {{ user.last_name|lower }}"
+                                data-email="{{ user.email|lower }}">
+                                <td>
+                                    <strong>{{ user.first_name }} {{ user.last_name }}</strong><br>
+                                    <small style="color:#8b9bb0;">+91 {{ user.user_profile.mobile|default:"-" }}</small>
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.date_joined|date:"d M Y" }}</td>
+                                <td><strong>{{ user.transaction_count|default:0 }}</strong></td>
+                                <td>
+                                    <span class="status-badge {% if user.is_active %}status-approved{% else %}status-rejected{% endif %}">
+                                        <i class="fas fa-check-circle"></i>
+                                        {{ user.is_active|yesno:"Active,Blocked" }}
+                                    </span>
+                                </td>
+                                <td class="action-group">
+                                    {% if user.is_active %}
+                                        <button class="btn-sm btn-reject"
+                                                onclick="if(confirm('Are you sure you want to block this user?'))
+                                                         window.location.href='{% url 'block_user' user.id %}'">
+                                            <i class="fas fa-ban"></i> Block
+                                        </button>
+                                    {% else %}
+                                        <button class="btn-sm btn-approve"
+                                                onclick="if(confirm('Are you sure you want to unblock this user?'))
+                                                         window.location.href='{% url 'block_user' user.id %}'">
+                                            <i class="fas fa-check"></i> Unblock
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <p>No users found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 4. SUPPORT SECTION ==================== -->
+        <div id="support" class="section">
+            <!-- Support Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalTickets">{{ total_tickets|default:0 }}</h3>
+                        <p>Total Tickets</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3 id="openTickets">{{ open_tickets|default:0 }}</h3>
+                        <p>Open Tickets</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="resolvedTickets">{{ resolved_tickets|default:0 }}</h3>
+                        <p>Resolved</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="urgentTickets">3</h3>
+                        <p>Urgent</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="ticketSearchInput" placeholder="Search tickets...">
+                </div>
+                <div class="filter-group">
+                    <select id="ticketStatusFilter" class="filter-select">
+                        <option value="all">All Tickets</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <button class="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-headset"></i> Support Tickets</h3>
+                    <span class="table-count">{{ total_tickets|default:0 }} tickets</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User</th>
+                                <th>Subject</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in support_tickets %}
+                            <tr>
+                                <td><strong>#TKT-{{ ticket.id|stringformat:"04d" }}</strong></td>
+                                <td>
+                                    {{ ticket.user.first_name }} {{ ticket.user.last_name }}<br>
+                                    <small>{{ ticket.user.email }}</small>
+                                </td>
+                                <td>{{ ticket.subject }}</td>
+                                <td>{{ ticket.created_at|date:"d M, H:i" }}</td>
+                                <td>
+                                    <button class="btn-sm btn-view"
+                                        onclick="openTicketModal(
+                                            '{{ ticket.id }}',
+                                            '{{ ticket.user.first_name }} {{ ticket.user.last_name }}',
+                                            '{{ ticket.user.email }}',
+                                            '{{ ticket.subject }}',
+                                            '{{ ticket.message|escapejs }}'
+                                        )">
+                                        Open
+                                    </button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" style="text-align:center;">No tickets</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+       <!-- ==================== PREMIUM TICKET MODAL ==================== -->
+<div id="ticketModal" class="modal">
+    <div class="ticket-modal-content">
+
+        <!-- Header -->
+        <div class="ticket-modal-header">
+            <div class="ticket-title">
+                <i class="fas fa-ticket-alt"></i>
+                <h3>Support Ticket</h3>
+            </div>
+            <button class="ticket-close" onclick="closeTicketModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Ticket Info -->
+        <div class="ticket-body">
+            <div class="ticket-row">
+                <span>ID</span>
+                <strong id="m_id"></strong>
+            </div>
+
+            <div class="ticket-row">
+                <span>User</span>
+                <strong id="m_user"></strong>
+            </div>
+
+            <div class="ticket-row">
+                <span>Email</span>
+                <strong id="m_email"></strong>
+            </div>
+
+            <div class="ticket-row">
+                <span>Subject</span>
+                <strong id="m_subject"></strong>
+            </div>
+
+            <!-- Message Box -->
+            <div class="ticket-message-box">
+                <p class="msg-label">Message</p>
+                <div class="msg-content" id="m_message"></div>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="ticket-footer">
+            <button class="ticket-btn secondary" onclick="closeTicketModal()">Close</button>
+           
+        </div>
+
+    </div>
+</div>
+
+        <!-- Details Modal -->
+        <div id="detailsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-info-circle"></i> Transaction Details</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div id="modalDetails">
+                    <div class="detail-row"><div class="detail-label">Request ID:</div><div class="detail-value" id="modalReqId">-</div></div>
+                    <div class="detail-row"><div class="detail-label">Sender:</div><div class="detail-value" id="modalSender">-</div></div>
+                    <div class="detail-row"><div class="detail-label">Receiver:</div><div class="detail-value" id="modalReceiver">-</div></div>
+                    <div class="detail-row"><div class="detail-label">Amount:</div><div class="detail-value" id="modalAmount">-</div></div>
+                    <div class="detail-row"><div class="detail-label">Created:</div><div class="detail-value" id="modalTime">-</div></div>
+                    <div class="detail-row"><div class="detail-label">Status:</div><div class="detail-value" id="modalStatus">-</div></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    // ==================== REQUEST HISTORY PAGINATION ====================
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    function paginateTable() {
+        const rows = Array.from(document.querySelectorAll('#tableBody tr[data-id]'));
+        const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+        // Hide all rows first
+        rows.forEach(row => row.style.display = 'none');
+
+        // Show only current page rows
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        rows.slice(start, end).forEach(row => row.style.display = '');
+
+        // Update pagination controls
+        renderPagination(totalPages);
+        
+        // Update count
+        document.getElementById('filteredCount').textContent = rows.length + ' requests';
+    }
+
+    function renderPagination(totalPages) {
+        const container = document.getElementById('paginationControls');
+        container.innerHTML = '';
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-btn';
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                paginateTable();
+            }
+        };
+        container.appendChild(prevBtn);
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.onclick = () => {
+                currentPage = i;
+                paginateTable();
+            };
+            container.appendChild(pageBtn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-btn';
+        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                paginateTable();
+            }
+        };
+        container.appendChild(nextBtn);
+    }
+
+    // ==================== SECTION PERSISTENCE ON REFRESH ====================
+    function saveActiveSection(sectionId) {
+        localStorage.setItem('activeAdminSection', sectionId);
+    }
+
+    function loadActiveSection() {
+        const savedSection = localStorage.getItem('activeAdminSection') || 'request-history';
+        
+        // Remove active from all sections and nav items
+        document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+        // Activate saved section
+        const sectionElement = document.getElementById(savedSection);
+        if (sectionElement) {
+            sectionElement.classList.add('active');
+        }
+
+        // Activate corresponding nav item
+        const navItem = document.querySelector(`.nav-item[data-section="${savedSection}"]`);
+        if (navItem) {
+            navItem.classList.add('active');
+        }
+    }
+
+    // ==================== EXISTING FUNCTIONS ====================
+    function updateStats() {
+        const rows = document.querySelectorAll('#tableBody tr[data-id]');
+        let total = rows.length;
+        let pending = 0, approved = 0, rejected = 0;
+        
+        rows.forEach(row => {
+            const status = row.getAttribute('data-status');
+            if (status === 'Pending') pending++;
+            else if (status === 'Approved') approved++;
+            else if (status === 'Rejected') rejected++;
+        });
+        
+        document.getElementById('totalRequests').textContent = total;
+        document.getElementById('pendingRequests').textContent = pending;
+        document.getElementById('approvedRequests').textContent = approved;
+        document.getElementById('rejectedRequests').textContent = rejected;
+    }
+
+    function filterAndSearch() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+        
+        const rows = Array.from(document.querySelectorAll('#tableBody tr[data-id]'));
+        
+        rows.forEach(row => {
+            const sender = row.getAttribute('data-sender') || '';
+            const receiver = row.getAttribute('data-receiver') || '';
+            const senderName = row.getAttribute('data-sender-name') || '';
+            const receiverName = row.getAttribute('data-receiver-name') || '';
+            const status = row.getAttribute('data-status');
+            
+            const matchesSearch = searchTerm === '' ||
+                sender.includes(searchTerm) ||
+                receiver.includes(searchTerm) ||
+                senderName.includes(searchTerm) ||
+                receiverName.includes(searchTerm);
+            
+            const matchesStatus = statusFilter === 'all' || status === statusFilter;
+            
+            row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+        });
+
+        currentPage = 1;
+        paginateTable();
+    }
+
+    function refreshData() {
+        updateStats();
+        filterAndSearch();
+        const btn = document.querySelector('.refresh-btn');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Refreshing...';
+        setTimeout(() => {
+            btn.innerHTML = originalHtml;
+        }, 800);
+    }
+
+    function confirmAction(action) {
+        return confirm(`Are you sure you want to ${action} this payment request?`);
+    }
+
+    function viewDetails(id, sender, receiver, amount, currency, time, status) {
+        document.getElementById('modalReqId').textContent = '#' + id;
+        document.getElementById('modalSender').textContent = sender;
+        document.getElementById('modalReceiver').textContent = receiver;
+        document.getElementById('modalAmount').textContent = amount + ' ' + currency;
+        document.getElementById('modalTime').textContent = time;
+        
+        let statusHtml = '';
+        if (status === 'Pending') statusHtml = '<span class="status-badge status-pending"><i class="fas fa-hourglass-half"></i> Pending</span>';
+        else if (status === 'Approved') statusHtml = '<span class="status-badge status-approved"><i class="fas fa-check-circle"></i> Approved</span>';
+        else statusHtml = '<span class="status-badge status-rejected"><i class="fas fa-times-circle"></i> Rejected</span>';
+        
+        document.getElementById('modalStatus').innerHTML = statusHtml;
+        document.getElementById('detailsModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('detailsModal').classList.remove('active');
+    }
+
+    // Navigation with persistence
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function () {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            
+            const sectionId = this.getAttribute('data-section');
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Save active section
+            saveActiveSection(sectionId);
+        });
+    });
+
+    // Attach event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load saved section first
+        loadActiveSection();
+
+        updateStats();
+        filterAndSearch(); // This also triggers pagination
+
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        
+        if (searchInput) searchInput.addEventListener('input', filterAndSearch);
+        if (statusFilter) statusFilter.addEventListener('change', filterAndSearch);
+        if (sortFilter) sortFilter.addEventListener('change', filterAndSearch);
+
+        // Animation
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach((card, index) => {
+            card.style.animation = `fadeInUp 0.3s ease ${index * 0.1}s forwards`;
+            card.style.opacity = '0';
+        });
+    });
+
+    // Animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // User filtering
+    function refreshUsers() {
+        filterUsers();
+    }
+    function filterUsers() {
+        const searchTerm = document.getElementById('userSearchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('#usersTableBody tr');
+        let count = 0;
+        rows.forEach(row => {
+            const name = row.getAttribute('data-name') || '';
+            const email = row.getAttribute('data-email') || '';
+            if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                row.style.display = '';
+                count++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        document.getElementById('userCount').textContent = count + ' users';
+    }
+    document.getElementById('userSearchInput').addEventListener('input', filterUsers);
+
+    // Ticket modal functions
+function openTicketModal(id, user, email, subject, message) {
+    document.getElementById("m_id").innerText = "#TKT-" + String(id).padStart(4, '0');
+    document.getElementById("m_user").innerText = user;
+    document.getElementById("m_email").innerText = email;
+    document.getElementById("m_subject").innerText = subject;
+    document.getElementById("m_message").innerText = message;
+
+    document.getElementById("ticketModal").classList.add("active");
+}
+
+function closeTicketModal() {
+    document.getElementById("ticketModal").classList.remove("active");
+}
+  
+</script>
+
+</body>
+</html>

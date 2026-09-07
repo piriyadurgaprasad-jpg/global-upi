@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Continue with Google</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .google-icon {
+            width: 60px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: #4285F4;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #3367d6;
+        }
+
+        .back {
+            margin-top: 15px;
+            display: block;
+            color: #888;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <img class="google-icon" src="https://cdn-icons-png.flaticon.com/512/281/281764.png" alt="Google">
+
+    <h2>Continue with Google</h2>
+    <p>You are about to sign in using your Google account.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn">Continue</button>
+    </form>
+
+    <a href="/" class="back">← Back to Home</a>
+</div>
+
+</body>
+</html>

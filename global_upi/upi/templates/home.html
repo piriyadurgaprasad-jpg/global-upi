@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPay Global · Premium Cross-Border Payments</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ========================
+           ROOT VARIABLES
+        ======================== */
+        :root {
+            --cream:      #FFFBF5;
+            --ivory:      #F7F3ED;
+            --warm-white: #FEFCF9;
+            --gold:       #B8860B;
+            --gold-light: #D4A853;
+            --gold-dark:  #8B6914;
+            --navy:       #0B2338;
+            --navy-mid:   #1A3B5C;
+            --navy-soft:  #2B577C;
+            --charcoal:   #1C1C1C;
+            --charcoal-s: #3A3A3A;
+            --taupe:      #A69080;
+            --taupe-l:    #C4B5A5;
+            --green:      #1F6E4C;
+
+            --display: 'Cormorant Garamond', Georgia, serif;
+            --body:    'DM Sans', -apple-system, sans-serif;
+
+            --xs: 0.5rem;
+            --sm: 1rem;
+            --md: 2rem;
+            --lg: 4rem;
+            --xl: 6rem;
+            --2xl: 10rem;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--body);
+            font-size: 17px;
+            line-height: 1.65;
+            color: var(--charcoal);
+            background: var(--cream);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img { max-width:100%; height:auto; display:block; }
+        a   { color: inherit; text-decoration: none; }
+
+        /* ========================
+           TYPOGRAPHY HELPERS
+        ======================== */
+        .display   { font-family: var(--display); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; }
+        .editorial { font-family: var(--display); font-weight: 400; font-style: italic; }
+        .label     { font-family: var(--body); font-size: 0.82rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--taupe); }
+
+        /* ========================
+           LAYOUT
+        ======================== */
+        .container {
+            width: 100%;
+            max-width: 1380px;
+            margin: 0 auto;
+            padding: 0 var(--md);
+        }
+
+        /* ========================
+           MESSAGES (Django alerts)
+        ======================== */
+        .message-container {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            z-index: 4000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .alert {
+            min-width: 280px;
+            max-width: 360px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: slideIn 0.4s ease;
+            border-left: 4px solid;
+        }
+        .alert.success { background: #f0faf5; color: #0f7a4f; border-color: #22c55e; }
+        .alert.error   { background: #fdf0f0; color: #b91c1c; border-color: #ef4444; }
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to   { transform: translateX(0); opacity: 1; }
+        }
+
+        /* ========================
+           HEADER / NAV
+        ======================== */
+        .site-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: var(--md) 0;
+            transition: background 0.4s, padding 0.4s;
+        }
+        .site-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,251,245,0.55);
+            backdrop-filter: blur(0px);
+            z-index: -1;
+            transition: backdrop-filter 0.4s;
+        }
+        .site-header.scrolled {
+            padding: var(--sm) 0;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+        }
+        .site-header.scrolled::before {
+            background: rgba(255,251,245,0.97);
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        /* Logo */
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        .logo-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(145deg, var(--navy), var(--navy-mid));
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold-light);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .logo-text {
+            font-family: var(--display);
+            font-size: 1.7rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: var(--charcoal);
+        }
+        .logo-text span { color: var(--gold); }
+
+        /* Nav links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--lg);
+        }
+        .nav-links a:not(.nav-cta) {
+            font-family: var(--body);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            position: relative;
+            padding-bottom: 3px;
+            transition: color 0.25s;
+        }
+        .nav-links a:not(.nav-cta)::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
+            transition: width 0.25s;
+        }
+        .nav-links a:not(.nav-cta):hover { color: var(--gold); }
+        .nav-links a:not(.nav-cta):hover::after { width: 100%; }
+
+        /* Nav buttons */
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            flex-shrink: 0;
+        }
+        .btn-outline {
+            font-family: var(--body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.65rem 1.4rem;
+            border: 1px solid var(--charcoal);
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        .btn-outline:hover { background: var(--charcoal); color: var(--cream); }
+
+        .btn-outline.gold-border {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+        .btn-outline.gold-border:hover { background: var(--gold); color: var(--cream); }
+
+        .btn-filled {
+            font-family: var(--body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.65rem 1.4rem;
+            background: var(--navy);
+            color: var(--cream);
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+        .btn-filled:hover { background: var(--gold-dark); }
+
+        .btn-filled.green { background: var(--green); }
+        .btn-filled.green:hover { background: #145c3b; }
+
+        /* Mobile toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 24px; height: 1.5px;
+            background: var(--charcoal);
+            transition: all 0.3s;
+        }
+
+        /* ========================
+           HERO SECTION
+        ======================== */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            min-height: 100vh;
+            background: var(--cream);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--md) var(--lg);
+            padding-left: max(var(--md), calc((100vw - 1380px)/2 + var(--md)));
+            padding-top: calc(var(--lg) + 60px);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-family: var(--body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            border: 1px solid var(--gold-light);
+            padding: 0.45rem 1.2rem;
+            margin-bottom: var(--sm);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.3s;
+        }
+
+        .hero-title {
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            margin-bottom: var(--sm);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards 0.5s;
+        }
+        .hero-title em { color: var(--gold); font-style: italic; }
+
+        .hero-desc {
+            max-width: 400px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--charcoal-s);
+            margin-bottom: var(--md);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.7s;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: var(--md);
+            margin-bottom: var(--md);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 0.85s;
+        }
+        .hero-stat {
+            border-left: 2px solid var(--gold-light);
+            padding-left: 1rem;
+        }
+        .hero-stat strong {
+            display: block;
+            font-family: var(--display);
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--gold-dark);
+            line-height: 1;
+        }
+        .hero-stat span { font-size: 0.82rem; color: var(--taupe); letter-spacing: 0.08em; text-transform: uppercase; }
+
+        .hero-actions {
+            display: flex;
+            gap: var(--sm);
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards 1.0s;
+        }
+
+        /* Hero visual panel */
+        .hero-panel {
+            position: relative;
+            background: linear-gradient(145deg, #0B2338, #1A3B5C);
+            clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--lg) var(--md);
+            overflow: hidden;
+        }
+        .hero-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 30%, rgba(184,134,11,0.15) 0%, transparent 60%);
+        }
+
+        .panel-currencies {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .currency-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 1.8rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .currency-row:hover {
+            background: rgba(184,134,11,0.15);
+            border-color: rgba(184,134,11,0.4);
+            transform: translateX(-6px);
+        }
+        .curr-flag { font-size: 2rem; }
+        .curr-code {
+            font-family: var(--display);
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--cream);
+            min-width: 60px;
+        }
+        .curr-name { font-size: 0.85rem; color: var(--taupe-l); letter-spacing: 0.06em; }
+        .curr-arrow { margin-left: auto; color: var(--gold-light); font-size: 0.9rem; }
+
+        .panel-icon {
+            font-size: 3rem;
+            color: var(--gold-light);
+            margin-bottom: var(--md);
+            opacity: 0.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeUp {
+            to { opacity:1; transform:translateY(0); }
+        }
+
+        /* ========================
+           SECTION SHARED
+        ======================== */
+        section { padding: var(--2xl) 0; }
+
+        .section-header { text-align: center; margin-bottom: var(--xl); }
+        .section-header h2 {
+            font-size: clamp(2.25rem, 4vw, 3.5rem);
+            margin: var(--xs) 0 var(--sm);
+        }
+        .section-header p { color: var(--taupe); font-size: 1.1rem; max-width: 520px; margin: 0 auto; }
+
+        /* ========================
+           ABSTRACT SECTION
+        ======================== */
+        .abstract { background: var(--ivory); }
+
+        .abstract-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--md);
+        }
+        .abstract-card {
+            background: var(--warm-white);
+            padding: var(--lg) var(--md);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .abstract-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 3px;
+            background: var(--gold);
+            transition: width 0.35s;
+        }
+        .abstract-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+        .abstract-card:hover::before { width: 100%; }
+
+        .abstract-icon {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: var(--sm);
+        }
+        .abstract-card h3 {
+            font-family: var(--display);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--navy);
+            margin-bottom: var(--xs);
+        }
+        .abstract-card p { color: var(--taupe); font-size: 0.95rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+        /* ========================
+           MODULES / ROLE CARDS
+        ======================== */
+        .modules { background: var(--cream); }
+
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--md);
+        }
+
+        .role-card {
+            background: var(--ivory);
+            padding: var(--lg) var(--md);
+            position: relative;
+            transition: transform 0.35s, box-shadow 0.35s;
+            overflow: hidden;
+        }
+        .role-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: var(--gold-light);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s;
+        }
+        .role-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .role-card:hover::after { transform: scaleX(1); }
+
+        .role-card.dark {
+            background: var(--navy);
+            color: var(--cream);
+        }
+        .role-card.dark::after { background: var(--gold); }
+
+        .role-card-icon {
+            width: 72px; height: 72px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(184,134,11,0.1);
+            font-size: 2rem;
+            margin-bottom: var(--md);
+            border: 1px solid rgba(184,134,11,0.25);
+        }
+        .role-card.dark .role-card-icon { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+
+        .role-card h3 {
+            font-family: var(--display);
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-bottom: var(--sm);
+        }
+
+        .role-features {
+            list-style: none;
+            margin-bottom: var(--md);
+        }
+        .role-features li {
+            padding: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .role-card.dark .role-features li { border-color: rgba(255,255,255,0.08); }
+        .role-features li::before {
+            content: '';
+            width: 6px; height: 1px;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .role-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            font-family: var(--body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: 1px solid var(--charcoal);
+            transition: all 0.25s;
+        }
+        .role-btn:hover { background: var(--charcoal); color: var(--cream); }
+        .role-btn.dark-btn { background: transparent; border-color: rgba(255,255,255,0.4); color: var(--cream); }
+        .role-btn.dark-btn:hover { background: var(--gold); border-color: var(--gold); }
+        .role-btn.green-btn { border-color: var(--green); color: var(--green); }
+        .role-btn.green-btn:hover { background: var(--green); color: var(--cream); }
+
+        /* ========================
+           CONVERTER SECTION
+        ======================== */
+        .converter { background: var(--navy); }
+
+        .converter-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--xl);
+            align-items: center;
+        }
+
+        .converter-left { }
+        .converter-left h2 {
+            font-size: clamp(2.25rem, 3.5vw, 3.2rem);
+            color: var(--cream);
+            margin: var(--xs) 0 var(--sm);
+        }
+        .converter-left p { color: var(--taupe-l); font-size: 1.05rem; line-height: 1.7; }
+
+        .converter-panel {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: var(--md);
+        }
+
+        .conv-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .conv-field label {
+            display: block;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--taupe-l);
+            margin-bottom: 0.5rem;
+        }
+        .conv-field input,
+        .conv-field select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-family: var(--body);
+            font-size: 1rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--cream);
+            transition: border-color 0.25s;
+        }
+        .conv-field input:focus,
+        .conv-field select:focus { outline: none; border-color: var(--gold); }
+        .conv-field select option { background: var(--navy); color: var(--cream); }
+
+        .conv-full { margin-bottom: 1rem; }
+        .conv-full .conv-field { width: 100%; }
+
+        .conv-submit {
+            width: 100%;
+            padding: 1.1rem;
+            font-family: var(--body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--gold);
+            color: var(--cream);
+            border: none;
+            cursor: pointer;
+            transition: background 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+        .conv-submit:hover { background: var(--gold-dark); }
+
+        .conv-result {
+            margin-top: 1.2rem;
+            padding: 1.5rem;
+            background: rgba(184,134,11,0.12);
+            border: 1px solid rgba(184,134,11,0.3);
+            text-align: center;
+        }
+        .conv-result p {
+            font-family: var(--display);
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--gold-light);
+        }
+        .conv-result span { font-size: 0.82rem; color: var(--taupe-l); letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-top: 0.3rem; }
+
+        /* ========================
+           TESTIMONIALS SECTION
+        ======================== */
+        .testimonials { background: var(--ivory); }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--md);
+        }
+
+        .testimonial-card {
+            background: var(--warm-white);
+            padding: var(--lg) var(--md);
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: var(--sm);
+            right: var(--md);
+            font-family: var(--display);
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--gold);
+            opacity: 0.25;
+        }
+
+        .testimonial-stars { display: flex; gap: 3px; margin-bottom: var(--sm); }
+        .testimonial-stars span { color: var(--gold); font-size: 1rem; }
+
+        .testimonial-text {
+            font-family: var(--display);
+            font-size: 1.15rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--charcoal-s);
+            margin-bottom: var(--md);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: var(--sm);
+            padding-top: var(--sm);
+            border-top: 1px solid var(--taupe-l);
+        }
+        .testimonial-avatar {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: var(--cream);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--display);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .testimonial-info .name { font-weight: 600; font-size: 0.95rem; }
+        .testimonial-info .role { font-size: 0.85rem; color: var(--taupe); }
+
+        /* ========================
+           REGISTER BANNER
+        ======================== */
+        .register-banner {
+            background: linear-gradient(125deg, var(--navy) 0%, #1b5c7c 100%);
+            padding: var(--2xl) 0;
+        }
+        .banner-inner {
+            text-align: center;
+            color: var(--cream);
+        }
+        .banner-inner .label { color: var(--gold-light); margin-bottom: var(--sm); display: block; }
+        .banner-inner h2 {
+            font-size: clamp(2.5rem, 4vw, 3.75rem);
+            margin-bottom: var(--sm);
+        }
+        .banner-inner p { color: var(--taupe-l); font-size: 1.1rem; margin-bottom: var(--md); }
+        .banner-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1.1rem 2.5rem;
+            background: var(--gold);
+            color: var(--cream);
+            font-family: var(--body);
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: none;
+            transition: background 0.25s;
+        }
+        .banner-btn:hover { background: var(--gold-dark); }
+
+        /* ========================
+           FOOTER
+        ======================== */
+        .site-footer {
+            background: linear-gradient(104deg, #1C1C1C 0%, #1C1C1C 30%, #222 30%, #222 70%, #1C1C1C 70%, #1C1C1C 100%);
+            color: var(--cream);
+            padding: var(--xl) 0 var(--md);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: var(--lg);
+            margin-bottom: var(--lg);
+            padding-bottom: var(--lg);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-logo {
+            font-family: var(--display);
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            margin-bottom: var(--sm);
+        }
+        .footer-logo span { color: var(--gold-light); }
+
+        .footer-tagline { font-size: 0.95rem; color: var(--taupe); line-height: 1.7; margin-bottom: var(--md); }
+
+        .footer-col-title {
+            font-family: var(--body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: var(--md);
+        }
+
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { font-size: 0.97rem; color: var(--taupe-l); transition: color 0.25s; }
+        .footer-links a:hover { color: var(--cream); }
+
+        .footer-social { display: flex; gap: var(--sm); margin-top: var(--md); }
+        .footer-social a {
+            width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--taupe-l);
+            font-size: 0.85rem;
+            transition: all 0.25s;
+        }
+        .footer-social a:hover { border-color: var(--gold); color: var(--gold-light); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-bottom p { font-size: 0.85rem; color: var(--taupe); }
+
+        /* ========================
+           MODALS
+        ======================== */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 35, 56, 0.88);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s;
+            padding: 20px;
+        }
+        .modal:target { visibility: visible; opacity: 1; }
+
+        .modal-box {
+            background: var(--warm-white);
+            width: 100%;
+            max-width: 460px;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--sm);
+            padding-bottom: var(--sm);
+            border-bottom: 1px solid var(--taupe-l);
+        }
+        .modal-header h2 {
+            font-family: var(--display);
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--navy);
+        }
+        .modal-close {
+            font-size: 2rem;
+            color: var(--taupe);
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: #ef4444; }
+
+        .modal-label { color: var(--gold-dark); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: var(--md); display: block; }
+
+        .input-group { margin-bottom: 1.1rem; }
+        .input-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            color: var(--navy-soft);
+            margin-bottom: 0.4rem;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            font-family: var(--body);
+            font-size: 1rem;
+            border: 1px solid var(--taupe-l);
+            background: transparent;
+            transition: border-color 0.25s;
+        }
+        .input-group input:focus,
+        .input-group select:focus { outline: none; border-color: var(--gold); }
+        .input-group input.error { border-color: #ef4444; background: #fef2f2; }
+
+        .err-msg { color: #ef4444; font-size: 0.8rem; margin-top: 0.3rem; padding-left: 0.5rem; display: none; }
+
+        .modal-submit {
+            width: 100%;
+            padding: 1.1rem;
+            font-family: var(--body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--navy);
+            color: var(--cream);
+            border: none;
+            cursor: pointer;
+            margin-top: var(--sm);
+            transition: background 0.25s;
+        }
+        .modal-submit:hover { background: var(--gold-dark); }
+
+        .modal-footnote { text-align: center; margin-top: 1.2rem; font-size: 0.9rem; color: var(--taupe); }
+        .modal-footnote a { color: var(--navy); font-weight: 600; }
+
+        /* ========================
+           MOBILE NAV
+        ======================== */
+        .mobile-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1999;
+            opacity: 0; visibility: hidden;
+            transition: all 0.35s;
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%; max-width: 380px;
+            height: 100vh;
+            background: var(--warm-white);
+            z-index: 2000;
+            padding: var(--xl) var(--md);
+            transition: right 0.4s;
+            overflow-y: auto;
+        }
+        .mobile-nav.active { right: 0; }
+        .mobile-nav-close {
+            position: absolute; top: var(--md); right: var(--md);
+            background: none; border: none;
+            font-size: 1.5rem; cursor: pointer; color: var(--charcoal);
+        }
+        .mobile-nav-links { list-style: none; margin-top: var(--xl); }
+        .mobile-nav-links li { margin-bottom: var(--md); }
+        .mobile-nav-links a {
+            font-family: var(--display);
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--charcoal);
+            transition: color 0.25s;
+        }
+        .mobile-nav-links a:hover { color: var(--gold); }
+        .mobile-nav-btns { margin-top: var(--lg); display: flex; flex-direction: column; gap: 0.8rem; }
+
+        /* ========================
+           RESPONSIVE
+        ======================== */
+        @media (max-width: 1100px) {
+            .nav-links { gap: var(--md); }
+            .role-grid, .abstract-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .menu-toggle { display: flex; }
+            .hero { grid-template-columns: 1fr; min-height: auto; }
+            .hero-panel { clip-path: none; min-height: 360px; padding-top: var(--md); }
+            .hero-content { padding-top: calc(var(--md) + 80px); }
+            .converter-inner { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { flex-direction: column; gap: var(--sm); text-align: center; }
+        }
+        @media (max-width: 680px) {
+            .abstract-grid, .role-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .hero-stats { flex-direction: column; gap: var(--sm); }
+            :root { --2xl: 6rem; --xl: 4rem; }
+        }
+
+        /* Google Button */
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0.9rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.google-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.google-btn:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+}
+
+/* Divider */
+.divider {
+    text-align: center;
+    margin: 10px 0 15px;
+    position: relative;
+}
+
+.divider span {
+    background: var(--warm-white);
+    padding: 0 10px;
+    font-size: 0.85rem;
+    color: var(--taupe);
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    z-index: -1;
+}
+    </style>
+</head>
+<body>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="message-container">
+        {% for message in messages %}
+            {% if message.tags == 'success' or message.tags == 'error' %}
+            <div class="alert {{ message.tags }}">
+                <i class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-xmark{% endif %}"></i>
+                <span>{{ message }}</span>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- =====================
+         HEADER
+    ===================== -->
+    <header class="site-header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="#home" class="logo-wrap">
+                    <div class="logo-icon"><i class="fas fa-globe"></i></div>
+                    <span class="logo-text">UniPay <span>Global</span></span>
+                </a>
+
+                <nav class="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#abstract">Abstract</a>
+                    <a href="#modules">Modules</a>
+                    <a href="#converter">Exchange</a>
+                   
+                </nav>
+
+                <div class="nav-buttons">
+                    <a href="#userLoginModal" class="btn-outline"><i class="fas fa-user-circle"></i> Login</a>
+                    <a href="#adminLoginModal" class="btn-filled"><i class="fas fa-shield-halved"></i> Admin</a>
+                    <a href="#registerModal" class="btn-filled green"><i class="fas fa-user-plus"></i> Register</a>
+                </div>
+
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" id="mobileNavClose">×</button>
+        <ul class="mobile-nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#abstract">Abstract</a></li>
+            <li><a href="#modules">Modules</a></li>
+            <li><a href="#converter">Exchange</a></li>
+            <li><a href="#testimonials">Trust</a></li>
+        </ul>
+        <div class="mobile-nav-btns">
+            <a href="#userLoginModal" class="btn-outline" style="justify-content:center;"><i class="fas fa-user-circle"></i> User Login</a>
+            <a href="#adminLoginModal" class="btn-filled" style="justify-content:center;"><i class="fas fa-shield-halved"></i> Admin Login</a>
+            <a href="#registerModal" class="btn-filled green" style="justify-content:center;"><i class="fas fa-user-plus"></i> Register</a>
+        </div>
+    </nav>
+
+    <!-- =====================
+         HERO
+    ===================== -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-badge"><i class="fas fa-bolt"></i> &nbsp;Real-Time Multi-Currency</span>
+            <h1 class="display hero-title">
+                UniPay <em>Global</em><br>Cross-Border UPI
+            </h1>
+            <p class="hero-desc">
+                A secure fintech ecosystem extending UPI to support international transactions. Users send via mobile number — admin applies live rates, converts currency, settles with compliance.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <strong>55+</strong>
+                    <span>Countries</span>
+                </div>
+                <div class="hero-stat">
+                    <strong>0.25s</strong>
+                    <span>Settlement</span>
+                </div>
+                <div class="hero-stat">
+                    <strong>1M+</strong>
+                    <span>Users</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="#registerModal" class="btn-filled green" style="padding:1rem 2rem; font-size:0.9rem;">Get Started</a>
+                <a href="#userLoginModal" class="btn-outline" style="padding:1rem 2rem; font-size:0.9rem;">Sign In</a>
+            </div>
+        </div>
+
+        <div class="hero-panel">
+            <div class="panel-icon"><i class="fas fa-arrow-right-arrow-left"></i></div>
+            <div class="panel-currencies">
+                <div class="currency-row">
+                    <span class="curr-flag">🇺🇸</span>
+                    <span class="curr-code">USD</span>
+                    <span class="curr-name">US Dollar</span>
+                    <span class="curr-arrow"><i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="currency-row">
+                    <span class="curr-flag">🇬🇧</span>
+                    <span class="curr-code">GBP</span>
+                    <span class="curr-name">British Pound</span>
+                    <span class="curr-arrow"><i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="currency-row">
+                    <span class="curr-flag">🇮🇳</span>
+                    <span class="curr-code">INR</span>
+                    <span class="curr-name">Indian Rupee</span>
+                    <span class="curr-arrow"><i class="fas fa-arrow-right"></i></span>
+                </div>
+                <div class="currency-row">
+                    <span class="curr-flag">🇰🇼</span>
+                    <span class="curr-code">KWD</span>
+                    <span class="curr-name">Kuwaiti Dinar</span>
+                    <span class="curr-arrow"><i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================
+         ABSTRACT
+    ===================== -->
+    <section class="abstract" id="abstract">
+        <div class="container">
+            <div class="section-header">
+                <p class="label">Simple Global Payments</p>
+                <h2 class="display">The Essence of<br><em class="editorial">UniPay</em></h2>
+                <p>Send money across borders using just a mobile number with real-time currency conversion.</p>
+            </div>
+            <div class="abstract-grid">
+                <div class="abstract-card">
+                    <div class="abstract-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Instant</h3>
+                    <p>Settlement</p>
+                </div>
+                <div class="abstract-card">
+                    <div class="abstract-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Secure</h3>
+                    <p>Encrypted</p>
+                </div>
+                <div class="abstract-card">
+                    <div class="abstract-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Live FX</h3>
+                    <p>Rates</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================
+         MODULES / ROLE CARDS
+    ===================== -->
+    <section class="modules" id="modules">
+        <div class="container">
+            <div class="section-header">
+                <p class="label">Platform Access</p>
+                <h2 class="display">Choose Your <em class="editorial">Role</em></h2>
+            </div>
+            <div class="role-grid">
+                <!-- User -->
+                <div class="role-card">
+                    <div class="role-card-icon">👤</div>
+                    <h3>User</h3>
+                    <ul class="role-features">
+                        <li>Send money instantly</li>
+                        <li>Track live transactions</li>
+                        <li>Multi-currency support</li>
+                    </ul>
+                    <a href="#userLoginModal" class="role-btn">Login as User</a>
+                </div>
+                <!-- Admin -->
+                <div class="role-card dark">
+                    <div class="role-card-icon">🛡️</div>
+                    <h3>Admin</h3>
+                    <ul class="role-features">
+                        <li>Manage exchange rates</li>
+                        <li>Approve transactions</li>
+                        <li>Compliance dashboard</li>
+                    </ul>
+                    <a href="#adminLoginModal" class="role-btn dark-btn">Login as Admin</a>
+                </div>
+                <!-- Business -->
+                <div class="role-card">
+                    <div class="role-card-icon">🏢</div>
+                    <h3>Business</h3>
+                    <ul class="role-features">
+                        <li>Mass payouts</li>
+                        <li>API integration</li>
+                        <li>Dedicated support</li>
+                    </ul>
+                    <a href="#registerModal" class="role-btn green-btn">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================
+         CURRENCY CONVERTER
+    ===================== -->
+    <section class="converter" id="converter">
+        <div class="container">
+            <div class="converter-inner">
+                <div class="converter-left">
+                    <p class="label" style="color:var(--gold-light);">Live Exchange</p>
+                    <h2 class="display" style="color:var(--cream);">Currency <em class="editorial" style="color:var(--gold-light);">Converter</em></h2>
+                    <p>Real-time mid-market rates. Convert between USD, EUR, GBP, INR, KWD and more — instantly.</p>
+                    <br>
+                    <p style="font-size:0.85rem; color:var(--taupe); letter-spacing:0.06em;"><i class="fas fa-chart-line" style="color:var(--gold);"></i> &nbsp;Mid-market rates updated in real time</p>
+                </div>
+                <div class="converter-panel">
+                    <div class="conv-row">
+                        <div class="conv-field">
+                            <label>Amount</label>
+                            <input type="number" id="convAmount" value="100">
+                        </div>
+                        <div class="conv-field">
+                            <label>From</label>
+                            <select id="fromCurr">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="INR">INR</option>
+                                <option value="KWD">KWD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="conv-row">
+                        <div class="conv-field" style="grid-column:1/-1;">
+                            <label>To</label>
+                            <select id="toCurr">
+                                <option value="EUR">EUR</option>
+                                <option value="USD" selected>USD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="INR">INR</option>
+                                <option value="KWD">KWD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="conv-submit" id="convertNowBtn">
+                        <i class="fas fa-calculator"></i> Convert Now
+                    </button>
+                    <div class="conv-result">
+                        <p id="convResultDisplay">—</p>
+                        <span>Live mid-market rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =====================
+         REGISTER BANNER
+    ===================== -->
+    <section class="register-banner">
+        <div class="container">
+            <div class="banner-inner">
+                <span class="label">Get Started Today</span>
+                <h2 class="display">Ready to simplify<br><em class="editorial">global payments?</em></h2>
+                <p>Join 1M+ users & businesses moving money across borders with UniPay.</p>
+                <a href="#registerModal" class="banner-btn"><i class="fas fa-user-plus"></i> Create Free Account</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================
+         FOOTER
+    ===================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <p class="footer-logo">UniPay <span>Global</span></p>
+                    <p class="footer-tagline">Secure multi-currency cross-border payments. Extending UPI globally with compliance-first infrastructure.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Modules</h4>
+                    <ul class="footer-links">
+                        <li><a href="#userLoginModal">User Login</a></li>
+                        <li><a href="#adminLoginModal">Admin Login</a></li>
+                        <li><a href="#registerModal">Register</a></li>
+                        <li><a href="#converter">Exchange</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Compliance</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 UniPay Global — Fintech Cross-Border Payments</p>
+                <p style="font-size:0.82rem; color:var(--taupe);">55+ countries · 0.25s settlement · 1M+ users</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================
+         MODALS
+    ===================== -->
+
+    <!-- User Login -->
+    <div id="userLoginModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-circle" style="color:var(--gold); font-size:1.6rem; margin-right:0.5rem;"></i> User Login</h2>
+                <a href="#" class="modal-close">&times;</a>
+            </div>
+            <span class="modal-label">Access your UniPay account</span>
+            <form method="POST" action="/user-login/">{% csrf_token %}
+                <div class="input-group">
+                    <label>Email or Mobile</label>
+                    <input type="text" name="identifier" placeholder="email@example.com / +44 7700 900123" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="modal-submit">Sign In</button>
+            </form>
+            <p class="modal-footnote"><a href="#registerModal">New user? Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-shield" style="color:var(--gold); font-size:1.6rem; margin-right:0.5rem;"></i> Admin Login</h2>
+                <a href="#" class="modal-close">&times;</a>
+            </div>
+            <span class="modal-label">Compliance & control dashboard</span>
+            <form method="POST" action="/admin-login/">{% csrf_token %}
+                <div class="input-group">
+                    <label>Admin Username</label>
+                    <input type="text" name="username" placeholder="enter username" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="modal-submit">Access Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register -->
+    <div id="registerModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-plus" style="color:var(--gold); font-size:1.6rem; margin-right:0.5rem;"></i> Create Account</h2>
+                <a href="#" class="modal-close">&times;</a>
+            </div>
+            <span class="modal-label">Join UniPay Global — free forever</span>
+            <!-- Google Sign In -->
+<a href="/accounts/google/login/" class="google-btn">
+    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+    Continue with Google
+</a>
+
+<div class="divider">
+    <span>OR</span>
+</div>
+            <form id="registerFormBackend" method="POST" action="/register/">{% csrf_token %}
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" name="fullname" id="regFullname" required>
+                    <div class="err-msg" id="fullnameError"></div>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" id="regEmailAddr" required>
+                    <div class="err-msg" id="emailErrorReg"></div>
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="text" name="mobile" id="regMobileNum" maxlength="10" required>
+                    <div class="err-msg" id="mobileErrorReg"></div>
+                </div>
+                <div class="input-group">
+                    <label>Preferred Currency</label>
+                    <select name="currency" id="regCurrencySelect" required>
+                        <option value="USD">USD ($)</option>
+                        <option value="KWD">KWD (د.ك)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="INR">INR (₹)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" id="regPasswordField" required>
+                    <div class="err-msg" id="passwordErrorReg"></div>
+                </div>
+                <button type="submit" class="modal-submit">Create Account</button>
+            </form>
+            <p class="modal-footnote"><a href="#userLoginModal">Already have an account? Sign in</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Header scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        // Mobile nav
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav  = document.getElementById('mobileNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileClose   = document.getElementById('mobileNavClose');
+
+        const openNav  = () => { mobileNav.classList.add('active'); mobileOverlay.classList.add('active'); document.body.style.overflow='hidden'; };
+        const closeNav = () => { mobileNav.classList.remove('active'); mobileOverlay.classList.remove('active'); document.body.style.overflow=''; };
+
+        menuToggle.addEventListener('click', openNav);
+        mobileClose.addEventListener('click', closeNav);
+        mobileOverlay.addEventListener('click', closeNav);
+        document.querySelectorAll('.mobile-nav-links a').forEach(a => a.addEventListener('click', closeNav));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href.length > 1 && !document.querySelector(href)?.classList.contains('modal')) {
+                    const t = document.querySelector(href);
+                    if (t) { e.preventDefault(); window.scrollTo({ top: t.offsetTop - header.offsetHeight, behavior:'smooth' }); }
+                }
+            });
+        });
+
+        // Currency converter
+        const rates = { USD:1, EUR:0.92, GBP:0.79, INR:83.2, KWD:0.307 };
+        function doConvert() {
+            let amt = parseFloat(document.getElementById('convAmount').value) || 0;
+            const from = document.getElementById('fromCurr').value;
+            const to   = document.getElementById('toCurr').value;
+            const res  = (amt / rates[from]) * rates[to];
+            document.getElementById('convResultDisplay').textContent = `${amt} ${from} = ${res.toFixed(2)} ${to}`;
+        }
+        document.getElementById('convertNowBtn').addEventListener('click', doConvert);
+        doConvert();
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.style.opacity = '1';
+                    e.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('section:not(.hero)').forEach(s => {
+            s.style.opacity = '0';
+            s.style.transform = 'translateY(28px)';
+            s.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(s);
+        });
+
+        // Auto-dismiss messages
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(120%)';
+                el.style.transition = '0.4s ease';
+            });
+        }, 5000);
+
+        // Register form validation
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registerFormBackend');
+            if (!form) return;
+            const emailInp  = document.getElementById('regEmailAddr');
+            const mobileInp = document.getElementById('regMobileNum');
+            const passInp   = document.getElementById('regPasswordField');
+            const emailErr  = document.getElementById('emailErrorReg');
+            const mobileErr = document.getElementById('mobileErrorReg');
+            const passErr   = document.getElementById('passwordErrorReg');
+
+            const vEmail  = () => { const ok = emailInp.value.trim().endsWith('@gmail.com'); emailInp.classList.toggle('error',!ok); emailErr.style.display=ok?'none':'block'; emailErr.textContent='Must end with @gmail.com'; return ok; };
+            const vMobile = () => { const ok = /^\d{10}$/.test(mobileInp.value.trim()); mobileInp.classList.toggle('error',!ok); mobileErr.style.display=ok?'none':'block'; mobileErr.textContent='Exactly 10 digits'; return ok; };
+            const vPass   = () => { const ok = passInp.value.length >= 8; passInp.classList.toggle('error',!ok); passErr.style.display=ok?'none':'block'; passErr.textContent='Min 8 characters'; return ok; };
+
+            emailInp.addEventListener('input', vEmail);
+            mobileInp.addEventListener('input', vMobile);
+            passInp.addEventListener('input', vPass);
+            form.addEventListener('submit', e => { if (!vEmail()||!vMobile()||!vPass()) e.preventDefault(); });
+        });
+    </script>
+</body>
+</html>
